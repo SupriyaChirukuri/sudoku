@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Solver</h1>
+    <h2>Enter the Sudoku Grid:</h2>
+    <table id="grid">
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+        <tr>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+            <td><input type="number" min="0" max="9" size="1"></td>
+        </tr>
+       
+    </table>
+    <button id="solve">Solve Sudoku</button>
+    <h2 id="result"></h2>
+    <script>
+        let grid = [];
+        let solved = false;
+
+        // Get the Sudoku grid from the input
+        document.getElementById("grid").querySelectorAll("input").forEach((input, index) => {
+            let row = Math.floor(index / 9);
+            let col = index % 9;
+            if (!grid[row]) {
+                grid[row] = [];
+            }
+            grid[row][col] = parseInt(input.value) || 0;
+        });
+
+        // Solve the Sudoku puzzle
+        document.getElementById("solve").addEventListener("click", solveSudoku);
+
+        function solveSudoku() {
+            if (solved) {
+                return;
+            }
+            solved = true;
+            if (solve(grid)) {
+                displaySolution(grid);
+            } else {
+                document.getElementById("result").innerHTML = "No solution found.";
+            }
+        }
+
+        // Backtracking algorithm to solve the Sudoku puzzle
+        function solve(grid) {
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (grid[i][j] === 0) {
+                        for (let k = 1; k <= 9; k++) {
+                            if (isValid(grid, i, j, k)) {
+                                grid[i][j] = k;
+                                if (solve(grid)) {
+                                    return true;
+                                }
+                                grid[i][j] = 0;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Check if a number is valid in a given position
+        function isValid(grid, row, col, num) {
+            for (let i = 0; i < 9; i++) {
+                if (grid[row][i] === num) {
+                    return false;
+                }
+                if (grid[i][col] === num) {
+                    return false;
+                }
+            }
+            let boxRow = Math.floor(row / 3) * 3;
+            let boxCol = Math.floor(col / 3) * 3;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (grid[boxRow + i][boxCol + j] === num) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Display the solved Sudoku puzzle
+        function displaySolution(grid) {
+            let solution = "";
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    solution += grid[i][j] + " ";
+                }
+                solution += "<br>";
+            }
+            document.getElementById("result").innerHTML = solution;
+        }
+    </script>
+</body>
+</html>
