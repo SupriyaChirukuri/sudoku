@@ -10,35 +10,44 @@
             margin: 10px 0;
         }
         td {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             text-align: center;
             border: 1px solid black;
+            font-size: 18px;
         }
         input {
-            width: 28px;
-            height: 28px;
+            width: 33px;
+            height: 33px;
             text-align: center;
             border: none;
-            font-size: 16px;
+            font-size: 18px;
         }
         button {
-            margin: 10px 0;
-            padding: 5px 10px;
+            margin: 10px 5px;
+            padding: 8px 12px;
             font-size: 16px;
+            cursor: pointer;
+        }
+        .solved {
+            background-color: #d4edda;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <h1>Sudoku Solver</h1>
     <p>Enter the Sudoku Grid:</p>
-
+    <p class="error" id="error-message"></p>
     <table>
         <tbody id="sudoku-grid"></tbody>
     </table>
-
     <button onclick="solveSudoku()">Solve Sudoku</button>
-
+    <button onclick="resetGrid()">Reset</button>
     <h2>Solution:</h2>
     <table>
         <tbody id="solved-grid"></tbody>
@@ -48,6 +57,8 @@
         function createSudokuGrid() {
             let table = document.getElementById("sudoku-grid");
             let solvedTable = document.getElementById("solved-grid");
+            table.innerHTML = "";
+            solvedTable.innerHTML = "";
 
             for (let i = 0; i < 9; i++) {
                 let row = document.createElement("tr");
@@ -59,6 +70,7 @@
                     input.type = "text";
                     input.maxLength = 1;
                     input.id = `cell-${i}-${j}`;
+                    input.oninput = (e) => validateInput(e, i, j);
                     cell.appendChild(input);
                     row.appendChild(cell);
 
@@ -68,6 +80,22 @@
                 }
                 table.appendChild(row);
                 solvedTable.appendChild(solvedRow);
+            }
+        }
+
+        function validateInput(event, row, col) {
+            let input = event.target;
+            input.value = input.value.replace(/[^1-9]/g, '');
+            if (input.value !== "") {
+                moveToNextCell(row, col);
+            }
+        }
+
+        function moveToNextCell(row, col) {
+            if (col < 8) {
+                document.getElementById(`cell-${row}-${col + 1}`).focus();
+            } else if (row < 8) {
+                document.getElementById(`cell-${row + 1}-0`).focus();
             }
         }
 
@@ -84,61 +112,11 @@
             return grid;
         }
 
-        function isValidInput(grid) {
-            for (let i = 0; i < 9; i++) {
-                let rowSet = new Set();
-                let colSet = new Set();
-
-                for (let j = 0; j < 9; j++) {
-                    let rowVal = grid[i][j];
-                    let colVal = grid[j][i];
-
-                    if (rowVal !== 0) {
-                        if (rowSet.has(rowVal)) {
-                            alert(`Invalid input! Duplicate number ${rowVal} in row ${i + 1}`);
-                            return false;
-                        }
-                        rowSet.add(rowVal);
-                    }
-
-                    if (colVal !== 0) {
-                        if (colSet.has(colVal)) {
-                            alert(`Invalid input! Duplicate number ${colVal} in column ${i + 1}`);
-                            return false;
-                        }
-                        colSet.add(colVal);
-                    }
-                }
-            }
-
-            for (let boxRow = 0; boxRow < 9; boxRow += 3) {
-                for (let boxCol = 0; boxCol < 9; boxCol += 3) {
-                    let boxSet = new Set();
-
-                    for (let i = 0; i < 3; i++) {
-                        for (let j = 0; j < 3; j++) {
-                            let val = grid[boxRow + i][boxCol + j];
-
-                            if (val !== 0) {
-                                if (boxSet.has(val)) {
-                                    alert(`Invalid input! Duplicate number ${val} in 3x3 grid starting at row ${boxRow + 1}, column ${boxCol + 1}`);
-                                    return false;
-                                }
-                                boxSet.add(val);
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
         function isValid(grid, row, col, num) {
             for (let i = 0; i < 9; i++) {
                 if (grid[row][i] == num || grid[i][col] == num) return false;
             }
-            let startRow = row - (row % 3),
-                startCol = col - (col % 3);
+            let startRow = row - (row % 3), startCol = col - (col % 3);
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 3; j++) {
                     if (grid[i + startRow][j + startCol] == num) return false;
@@ -163,24 +141,28 @@
         }
 
         function solveSudoku() {
+            document.getElementById("error-message").textContent = "";
             let grid = getGridValues();
-
-            if (!isValidInput(grid)) {
-                return; 
-            }
-
             if (solve(grid, 0, 0)) {
                 for (let i = 0; i < 9; i++) {
                     for (let j = 0; j < 9; j++) {
-                        document.getElementById(`solved-${i}-${j}`).textContent = grid[i][j];
+                        let solvedCell = document.getElementById(`solved-${i}-${j}`);
+                        solvedCell.textContent = grid[i][j];
+                        solvedCell.classList.add("solved");
                     }
                 }
             } else {
-                alert("No solution exists!");
+                document.getElementById("error-message").textContent = "No solution exists!";
             }
+        }
+
+        function resetGrid() {
+            createSudokuGrid();
+            document.getElementById("error-message").textContent = "";
         }
 
         createSudokuGrid();
     </script>
 </body>
 </html>
+
